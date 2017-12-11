@@ -59,7 +59,7 @@ class TransactionsCacheHelper{
             foreach ($transactionsData as $trax) {
                 $_transactions = [];
 
-
+                $key = $this->getCacheKey();
                 $_data = $this->loadCacheData($trax);
                 if($_data->validate()){
                     array_push($_transactions,$_data);
@@ -80,6 +80,16 @@ class TransactionsCacheHelper{
      */
     private function getCacheKey($keys=self::CACHE_KEY){
         return sprintf("%s",$keys);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    public function getTransactionsData(){
+        $transactionsData = $this->getAllTransactions();
+        $key = $this->getCacheKey();
+        if(!$transactionsData || !is_array($transactionsData) || !isset($transactionsData[$key])){
+            return [];
+        }
+        return $transactionsData[$key];
     }
 
     //------------------------------------------------------------------------------------------------------------------
