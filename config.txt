@@ -1,0 +1,34 @@
+Yii2 advance application install using Composer
+running command php init to config
+common/config/main.php setup data base
+
+Bank Server pointing app-bank folder
+Admin Server pointing backend folder
+
+<VirtualHost *:80>
+    ServerName satcadmin.sunil.rgtest.in
+    DocumentRoot /var/www/work/yii2-rest-api-backend/backend/web
+    <Directory "/var/www/work/yii2-rest-api-backend/backend/web/">
+            Options Indexes FollowSymLinks
+            AllowOverride All
+            Order allow,deny
+            Allow from all
+           Require all granted
+    </Directory>
+
+   ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+
+Admin Login
+
+user name = admin
+password = 123456
+
+
+Cron Job Config
+
+*/5 23:47 */2 * * php /var/www/work/console/yii.php transactions/sum
+*/8 23:47 */2 * * php /var/www/work/console/yii.php transactions/cron

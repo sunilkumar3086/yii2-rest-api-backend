@@ -19,6 +19,10 @@ use bank\models\response\ListAPIResponse;
 use bank\models\response\TransactionAddResponse;
 use bank\models\response\TransactionListResponse;
 use bank\models\response\TransactionsResponse;
+use bank\models\response\TransactionStatusResponse;
+use common\components\Utils;
+use common\models\Transactions;
+use yii\base\InvalidParamException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\ConflictHttpException;
@@ -33,6 +37,7 @@ class TransactionsController extends RestController{
                     'list'  => ['post'],
                     'update'  => ['post'],
                     'customer-transaction'  => ['post'],
+                    'delete'  => ['get'],
                 ],
             ],
         ];
@@ -151,5 +156,26 @@ class TransactionsController extends RestController{
         }
 
         return $this->sendResponse($response);
+    }
+
+    public function actionDelete(){
+        $transactionId = \Yii::$app->request->get(['transactionId',null]);
+        if(!$transactionId || !is_numeric($transactionId)){
+            throw new InvalidParamException();
+        }
+
+        $row = Transactions::updateAll(['deleted_at'=>Utils::getNow()],['id'=>$transactionId]);
+
+        $response = new TransactionStatusResponse();
+        $response->status = $row ? TransactionStatusResponse::SUCCESS:TransactionStatusResponse::FAIL;
+
+        if(!$response->validate()){
+            throw new ConflictHttpException("Invalid response");
+        }
+
+        return $this->sendResponse($response);
+
+
+
     }
 }
