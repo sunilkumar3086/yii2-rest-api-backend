@@ -83,9 +83,48 @@ class TransactionsHelper{
         return $transactionList;
     }
 
+    /**
+     * @param $transactionId
+     * @param $amount
+     * @return array|Transactions|null
+     */
+    public function updateTransactions($transactionId, $amount){
+        if(!$transactionId || !is_numeric($transactionId) && !$amount || !is_numeric($amount)){
+            return null;
+        }
+        $transactions = $this->getTransactions($transactionId);
+        if(!$transactions){
+            return null;
+        }
 
-    private function _transactionQuery(){
-        return Transactions::find();
+        $transactions->amount = $amount;
+        if(!$transactions->save()){
+            return null;
+        }
+
+        return $transactions;
+
+    }
+
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param $transactionId
+     * @return array|null|Transactions
+     */
+    private function getTransactions($transactionId){
+        if(!$transactionId || !is_numeric($transactionId)){
+            return null;
+        }
+
+        $transactions = Transactions::find()->where(['id'=>$transactionId])->one();
+        if(empty($transactions)){
+            return null;
+        }
+
+        return $transactions;
+
     }
 
 

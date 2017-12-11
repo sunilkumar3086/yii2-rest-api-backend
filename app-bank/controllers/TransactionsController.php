@@ -12,10 +12,12 @@ namespace bank\controllers;
 use bank\components\TransactionsHelper;
 use bank\models\request\TransactionAddRequest;
 use bank\models\request\TransactionListRequest;
+use bank\models\request\TransactionUpdateRequest;
 use bank\models\response\EmptyListAPIResponse;
 use bank\models\response\ListAPIResponse;
 use bank\models\response\TransactionAddResponse;
 use bank\models\response\TransactionListResponse;
+use bank\models\response\TransactionsResponse;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\ConflictHttpException;
@@ -28,6 +30,7 @@ class TransactionsController extends RestController{
                 'actions' => [
                     'add'  => ['post'],
                     'list'  => ['post'],
+                    'update'  => ['post'],
                 ],
             ],
         ];
@@ -94,7 +97,32 @@ class TransactionsController extends RestController{
         }
 
         return $this->sendResponse($_response);
+    }
 
 
+    //------------------------------------------------------------------------------------------------------------------
+    public function actionUpdate(){
+
+        $request = new TransactionUpdateRequest();
+        $request->load(\Yii::$app->request->post(),'');
+
+        if(!$request->validate()){
+            throw new ConflictHttpException("Invalid Request");
+        }
+
+        $helper = TransactionsHelper::getInstance();
+        $transactions = $helper->updateTransactions($request->transactionId,$request->amount);
+        if(!$transactions){
+            throw new ConflictHttpException("Transactions not saved Please try again");
+        }
+
+        $response = new TransactionsResponse();
+        $response->loadFromApiResponse($transactions);
+
+        if(!$response->validate()){
+            throw new ConflictHttpException("Transactions response invalid");
+        }
+
+        return $this->sendResponse($response);
     }
 }
