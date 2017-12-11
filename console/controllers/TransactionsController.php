@@ -6,7 +6,14 @@
  * Time: 6:28 PM
  */
 
-class TransactionsController
-{
+namespace console\controllers;
+
+use yii\console\Controller;
+
+class TransactionsController extends Controller{
+
+    public function actionIndex(){
+
+    }
 
 }

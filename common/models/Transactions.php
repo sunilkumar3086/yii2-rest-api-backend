@@ -14,6 +14,7 @@ use Yii;
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at
+ * @property string $cron_status
  *
  * @property User $customer
  */
@@ -47,7 +48,7 @@ class Transactions extends \yii\db\ActiveRecord
         return [
             [['customer_id', 'amount'], 'required'],
             [['customer_id', 'amount'], 'integer'],
-            [['created_at', 'updated_at', 'deleted_at'], 'safe'],
+            [['created_at', 'updated_at', 'deleted_at','cron_status'], 'safe'],
             [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
@@ -64,6 +65,7 @@ class Transactions extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
+            'cron_status' => 'Cron Status',
         ];
     }
 
