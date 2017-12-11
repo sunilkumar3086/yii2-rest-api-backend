@@ -10,4 +10,12 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
     ],
+
+    'db' => [
+        'class' => 'yii\db\Connection',
+        'dsn' => 'mysql:host=localhost;dbname=satc_backend',
+        'username' => 'root',
+        'password' => '',
+        'charset' => 'utf8',
+    ],
 ];
