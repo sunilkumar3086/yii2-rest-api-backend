@@ -13,7 +13,7 @@ return [
             'class' => 'yii\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=satc_backend',
             'username' => 'root',
-            'password' => '',
+            'password' => 'sunil123',
             'charset' => 'utf8',
         ],
     ],
