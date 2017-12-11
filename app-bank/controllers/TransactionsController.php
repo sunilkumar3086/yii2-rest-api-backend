@@ -15,6 +15,7 @@ use bank\models\request\TransactionListRequest;
 use bank\models\response\EmptyListAPIResponse;
 use bank\models\response\ListAPIResponse;
 use bank\models\response\TransactionAddResponse;
+use bank\models\response\TransactionListResponse;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
 use yii\web\ConflictHttpException;
@@ -80,6 +81,19 @@ class TransactionsController extends RestController{
 
         $_response = new ListAPIResponse();
 
+        foreach ($transactions as $_tax){
+            $response = new TransactionListResponse();
+            $response->loadFromApiResponse($_tax);
+            if($response->validate()){
+               $_response->addData($response);
+            }
+        }
+
+        if(!$_response->validate()){
+            return $this->sendResponse($emptyResponse);
+        }
+
+        return $this->sendResponse($_response);
 
 
     }
