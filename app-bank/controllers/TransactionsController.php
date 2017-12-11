@@ -22,7 +22,7 @@ class TransactionsController extends RestController{
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'index'  => ['post'],
+                    'add'  => ['post'],
                 ],
             ],
         ];
@@ -32,9 +32,9 @@ class TransactionsController extends RestController{
 
 
     //------------------------------------------------------------------------------------------------------------------
-    public function actionIndex(){
+    public function actionAdd(){
         $request = new TransactionAddRequest();
-        $request->load(\Yii::$app->request->post(),null);
+        $request->load(\Yii::$app->request->post(),'');
 
         if(!$request->validate()){
             throw new ConflictHttpException("Invalid Request");

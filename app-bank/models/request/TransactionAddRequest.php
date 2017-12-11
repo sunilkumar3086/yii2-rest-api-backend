@@ -19,7 +19,7 @@ class TransactionAddRequest extends BankAPIRequest{
         return [
             [['customerId','amount'],'required'],
             [['customerId','amount'],'integer'],
-            [['amount'],'integer','max'=>0],
+            [['amount'],'integer','min'=>1],
         ];
     }
 
