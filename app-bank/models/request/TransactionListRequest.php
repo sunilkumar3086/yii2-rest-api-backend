@@ -18,8 +18,7 @@ class TransactionListRequest extends TransactionAddRequest {
     //------------------------------------------------------------------------------------------------------------------
     public function rules(){
         return [
-            [['customerId',],'required'],
-            [['amount','date','offset','limit'],'safe'],
+            [['customerId','amount','date','offset','limit'],'safe'],
             [['customerId','amount','offset','limit'],'integer'],
             [['amount'],'integer','min'=>1],
             [['offset'],'default','value'=>self::OFFSET],

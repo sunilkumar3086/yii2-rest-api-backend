@@ -11,6 +11,7 @@ namespace bank\controllers;
 
 use bank\components\TransactionsHelper;
 use bank\models\request\TransactionAddRequest;
+use bank\models\request\TransactionCustomerRequest;
 use bank\models\request\TransactionListRequest;
 use bank\models\request\TransactionUpdateRequest;
 use bank\models\response\EmptyListAPIResponse;
@@ -31,6 +32,7 @@ class TransactionsController extends RestController{
                     'add'  => ['post'],
                     'list'  => ['post'],
                     'update'  => ['post'],
+                    'customer-transaction'  => ['post'],
                 ],
             ],
         ];
@@ -113,7 +115,32 @@ class TransactionsController extends RestController{
         $helper = TransactionsHelper::getInstance();
         $transactions = $helper->updateTransactions($request->transactionId,$request->amount);
         if(!$transactions){
-            throw new ConflictHttpException("Transactions not saved Please try again");
+            throw new ConflictHttpException("Transactions not updated Please try again");
+        }
+
+        $response = new TransactionsResponse();
+        $response->loadFromApiResponse($transactions);
+
+        if(!$response->validate()){
+            throw new ConflictHttpException("Transactions response invalid");
+        }
+
+        return $this->sendResponse($response);
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    public function actionCustomerTransaction(){
+        $request = new TransactionCustomerRequest();
+        $request->load(\Yii::$app->request->post(),'');
+
+        if(!$request->validate()){
+            throw new ConflictHttpException("Invalid Request");
+        }
+
+        $helper = TransactionsHelper::getInstance();
+        $transactions = $helper->getCustomerTransaction($request->customerId,$request->transactionId);
+        if(!$transactions){
+            throw new ConflictHttpException("Customer Transactions not found Please try again");
         }
 
         $response = new TransactionsResponse();

@@ -58,19 +58,20 @@ class TransactionsHelper{
     //------------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param $customerId
-     * @param null $amount
-     * @param null $date
      * @param int $offset
      * @param int $limit
-     * @return array|bool|null|Transactions[]
+     * @param null $customerId
+     * @param null $amount
+     * @param null $date
+     * @return array|bool|null|\yii\db\ActiveRecord[]
      */
-    public function getTransactionsCustomer($customerId, $amount=null, $date=null, $offset=self::DEFAULT_OFFSET, $limit = self::DEFAULT_LIMIT){
+    public function getTransactionsCustomer($offset=self::DEFAULT_OFFSET, $limit = self::DEFAULT_LIMIT,$customerId=null, $amount=null, $date=null){
         if(!$customerId || !is_numeric($customerId)){
             return false;
         }
 
-        $query = Transactions::find()->where(['customer_id'=>$customerId]);
+        $query = Transactions::find();
+        $query->andFilterWhere(['customer_id'=>$customerId]);
         $query->andFilterWhere(['amount'=>$amount]);
         $query->andFilterWhere(['DATE(created_at)'=>$date]);
 
@@ -127,5 +128,24 @@ class TransactionsHelper{
 
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param $customerId
+     * @param $transactionId
+     * @return array|null|Transactions
+     */
+    public function getCustomerTransaction($customerId,$transactionId){
+        if(!$customerId || !is_numeric($customerId) || !$transactionId || !is_numeric($transactionId)){
+            return null;
+        }
+
+        $transactions = Transactions::find()->where(['id'=>$transactionId])->andWhere(['customer_id'=>$customerId])->one();
+        if(empty($transactions)){
+            return null;
+        }
+
+        return $transactions;
+    }
 
 }
