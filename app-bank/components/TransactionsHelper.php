@@ -20,6 +20,9 @@ class TransactionsHelper{
 
     private static $obj = null;
 
+    const DEFAULT_OFFSET = 0;
+    const DEFAULT_LIMIT = 10;
+
     //------------------------------------------------------------------------------------------------------------------
     public static function getInstance(){
         if(!self::$obj || !(self::$obj instanceof TransactionsHelper)){
@@ -50,6 +53,39 @@ class TransactionsHelper{
 
         return $transactions;
 
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+
+    /**
+     * @param $customerId
+     * @param null $amount
+     * @param null $date
+     * @param int $offset
+     * @param int $limit
+     * @return array|bool|null|Transactions[]
+     */
+    public function getTransactionsCustomer($customerId, $amount=null, $date=null, $offset=self::DEFAULT_OFFSET, $limit = self::DEFAULT_LIMIT){
+        if(!$customerId || !is_numeric($customerId)){
+            return false;
+        }
+
+        $query = Transactions::find()->where(['customer_id'=>$customerId]);
+        $query->andFilterWhere(['amount'=>$amount]);
+        $query->andFilterWhere(['DATE(created_at)'=>$date]);
+
+        $transactionList = $query->offset($offset)->limit($limit)->all();
+
+        if(!$transactionList || !is_array($transactionList) || count($transactionList)==0){
+            return null;
+        }
+
+        return $transactionList;
+    }
+
+
+    private function _transactionQuery(){
+        return Transactions::find();
     }
 
 

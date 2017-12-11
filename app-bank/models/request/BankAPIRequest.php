@@ -15,6 +15,7 @@ class BankAPIRequest extends APIRequest
 {
     const OFFSET  = 0;
     const PAGE_SIZE = 10;
+
     public function loadFromRequest(){
         // TODO: Implement loadFromRequest() method.
     }

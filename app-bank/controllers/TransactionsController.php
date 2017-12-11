@@ -11,6 +11,9 @@ namespace bank\controllers;
 
 use bank\components\TransactionsHelper;
 use bank\models\request\TransactionAddRequest;
+use bank\models\request\TransactionListRequest;
+use bank\models\response\EmptyListAPIResponse;
+use bank\models\response\ListAPIResponse;
 use bank\models\response\TransactionAddResponse;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -23,6 +26,7 @@ class TransactionsController extends RestController{
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'add'  => ['post'],
+                    'list'  => ['post'],
                 ],
             ],
         ];
@@ -57,4 +61,26 @@ class TransactionsController extends RestController{
 
     }
 
+    //------------------------------------------------------------------------------------------------------------------
+    public function actionList(){
+        $request = new TransactionListRequest();
+        $request->load(\Yii::$app->request->post(),'');
+
+        if(!$request->validate()){
+            throw new ConflictHttpException("Invalid Request");
+        }
+
+        $emptyResponse = new EmptyListAPIResponse();
+
+        $helper = TransactionsHelper::getInstance();
+        $transactions = $helper->getTransactionsCustomer($request->customerId,$request->amount,$request->date,$request->offset,$request->limit);
+        if(!$transactions || !is_array($transactions) || count($transactions)==0){
+            return $this->sendResponse($emptyResponse);
+        }
+
+        $_response = new ListAPIResponse();
+
+
+
+    }
 }

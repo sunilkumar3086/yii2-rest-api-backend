@@ -9,7 +9,8 @@
 namespace bank\models\response;
 
 
-class TransactionAddResponse extends TransactionsResponse{
+class TransactionListResponse extends TransactionsResponse{
+
 
 
     //------------------------------------------------------------------------------------------------------------------
