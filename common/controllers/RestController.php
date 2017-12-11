@@ -18,6 +18,8 @@ class RestController extends Controller{
         if($response == null || ($validate && !$response->validate())){
             return $this->sendError($response);
         }
+        $cache_control = "public max-age=3600";
+        \Yii::$app->response->headers->add("Cache-Control",$cache_control);
         return $response;
     }
     //------------------------------------------------------------------------------------------------------------------
