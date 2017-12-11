@@ -34,6 +34,7 @@ class CustomerController extends RestController{
     //------------------------------------------------------------------------------------------------------------------
     public function actionIndex(){
         $_post = \Yii::$app->request->post();
+
         $request = new CustomerRequest();
         $request->loadFromRequest($_post);
 
@@ -52,7 +53,7 @@ class CustomerController extends RestController{
         $response->authKey = $user->auth_key;
 
         if(!$response->validate()){
-            throw  new ConflictHttpException("Customer response invalid");
+            throw new ConflictHttpException("Customer response invalid");
         }
 
         return $this->sendResponse($response);

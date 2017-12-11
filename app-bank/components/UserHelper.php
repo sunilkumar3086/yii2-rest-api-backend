@@ -25,13 +25,16 @@ class UserHelper extends Component{
      * @return User|null
      */
     public function saveUser(CustomerRequest $request){
+
         $user = new User();
         $user->username = $request->name;
         $user->email = self::TEST_EMAIL;
         $user->role = Role::CUSTOMER_ROLE;
         $user->setPassword($request->password);
         $user->generateAuthKey();
+
         if(!$user->save()){
+            print_r($user->getErrors());die;
             return null;
         }
 

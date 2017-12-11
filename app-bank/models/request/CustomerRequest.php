@@ -17,8 +17,8 @@ class CustomerRequest extends BankAPIRequest{
     //------------------------------------------------------------------------------------------------------------------
     public function rules(){
         return [
-            [['name','cnp'],'required'],
-            ['name', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This name has already been taken.'],
+            [['name','password'],'required'],
+            ['name', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This name has already been taken.','targetAttribute'=>'username'],
             ['name', 'string', 'min' => 2, 'max' => 255],
             ['password', 'string', 'min' => 6],
 
