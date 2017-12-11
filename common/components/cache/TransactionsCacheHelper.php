@@ -54,16 +54,13 @@ class TransactionsCacheHelper{
             $dependency = new DbDependency([
                 'sql' => 'SELECT MAX(updated_at) FROM transactions',
             ]);
-            $transactionsData = Transactions::find()->where(['cron_status'=>Transactions::CRON_STATUS_DEFAULT])->andWhere(['<','created_at',Utils::subtractDays(2)])->all();
+            $transactionsData = Transactions::find()->where(['cron_status'=>Transactions::CRON_STATUS_DEFAULT])->andWhere(['<','DATE(created_at)',Utils::subtractDays(1)])->all();
             $allTransactions = [];
             foreach ($transactionsData as $trax) {
                 $_transactions = [];
 
                 $key = $this->getCacheKey();
-                $_data = $this->loadCacheData($trax);
-                if($_data->validate()){
-                    array_push($_transactions,$_data);
-                }
+                array_push($_transactions,$trax);
                 $allTransactions[$key]=$_transactions;
             }
             Yii::$app->dataCache->set(self::TRANSACTION_CACHE_DATA_CACHE_KEY, $allTransactions,7200, $dependency); //FOR 2 HOURS

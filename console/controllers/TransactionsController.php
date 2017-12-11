@@ -8,12 +8,19 @@
 
 namespace console\controllers;
 
+use console\components\TransactionsHelper;
 use yii\console\Controller;
 
 class TransactionsController extends Controller{
 
-    public function actionIndex(){
+    public function actionSum(){
+        $helper = TransactionsHelper::getInstance();
+        $helper->updateTransactionSum();
+    }
 
+    public function actionCron(){
+        $helper = TransactionsHelper::getInstance();
+        $helper->transactionCronUpdate();
     }
 
 }
