@@ -29,12 +29,11 @@ class UserHelper extends Component{
         $user = new User();
         $user->username = $request->name;
         $user->email = self::TEST_EMAIL;
-        $user->role = Role::CUSTOMER_ROLE;
+        $user->role = Role::ROLE_CUSTOMER;
         $user->setPassword($request->password);
         $user->generateAuthKey();
 
         if(!$user->save()){
-            print_r($user->getErrors());die;
             return null;
         }
 

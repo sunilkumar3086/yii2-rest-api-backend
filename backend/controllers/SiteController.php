@@ -26,7 +26,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'home'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -58,9 +58,9 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+    public function actionHome()
     {
-        return $this->render('index');
+        $this->redirect('/transaction/index');
     }
 
     /**
@@ -76,7 +76,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            $this->redirect('/site/home');
         } else {
             return $this->render('login', [
                 'model' => $model,
