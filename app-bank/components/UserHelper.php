@@ -9,13 +9,14 @@
 namespace bank\components;
 
 use bank\models\request\CustomerRequest;
+use common\models\Role;
 use common\models\User;
 use yii\base\Component;
 
 class UserHelper extends Component{
 
 
-    const TEST_EMAIL="test@gmail.com";
+    const TEST_EMAIL="test@example.com";
 
     //------------------------------------------------------------------------------------------------------------------
 
@@ -27,6 +28,7 @@ class UserHelper extends Component{
         $user = new User();
         $user->username = $request->name;
         $user->email = self::TEST_EMAIL;
+        $user->role = Role::CUSTOMER_ROLE;
         $user->setPassword($request->password);
         $user->generateAuthKey();
         if(!$user->save()){
