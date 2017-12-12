@@ -6,7 +6,7 @@
  * Time: 5:01 PM
  */
 
-namespace common\models\reglobe;
+namespace common\models;
 
 
 use common\models\Transactions;

@@ -41,7 +41,7 @@ class TransactionsSearch extends Transactions
      */
     public function search($params)
     {
-        $query = Transactions::find();
+        $query = self::find();
 
         // add conditions that should always apply here
 
@@ -62,10 +62,18 @@ class TransactionsSearch extends Transactions
             'id' => $this->id,
             'customer_id' => $this->customer_id,
             'amount' => $this->amount,
-            'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
         ]);
+
+
+        if($this->created_at){
+            $dates = explode(' - ' , $this->created_at);
+
+            if(count($dates) == 2){
+                $query->andWhere(['between','DATE(created_at)',$dates[0], $dates[1]]);
+            }
+        }
 
         return $dataProvider;
     }

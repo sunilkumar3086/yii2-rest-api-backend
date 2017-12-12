@@ -25,15 +25,15 @@ $this->params['breadcrumbs'][] = $this->title;
             'customer_id',
             'amount',
 
-
             [
-                'attribute' => 'created_at',
-                'format' => ['date', 'php:Y-m-d'],
-                'filter' => DateT::widget([]),
-
+                'class' => \common\widgets\grid\DatePickerColumn::className(),
+                'header' => 'Original Pickup Date',
+                'column' => 'created_at',
+                'containerOptions' => ['class' => 'drp-container input-group',],
+                'filterAttribute' => 'created_at',
             ],
 
-            'updated_at',
+            //'updated_at',
             // 'deleted_at',
 
             [

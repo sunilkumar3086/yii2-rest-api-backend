@@ -3,7 +3,6 @@
 namespace common\models;
 
 use common\components\Utils;
-use common\models\reglobe\TransactionsFilter;
 use Yii;
 
 /**
@@ -67,7 +66,7 @@ class Transactions extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'id' => 'Transaction Id',
             'customer_id' => 'Customer ID',
             'amount' => 'Amount',
             'created_at' => 'Created At',
