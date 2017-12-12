@@ -60,7 +60,7 @@ class SiteController extends Controller
      */
     public function actionHome()
     {
-        $this->redirect('/transaction/index');
+        $this->redirect('/transactions/index');
     }
 
     /**

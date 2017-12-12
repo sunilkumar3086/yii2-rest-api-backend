@@ -60,11 +60,20 @@ class TransactionsSearch extends Transactions
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'customer_id' => $this->customer_id,
             'amount' => $this->amount,
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
         ]);
+
+        if (Yii::$app->user->isCustomer && !$this->customer_id) {
+            $query->andFilterWhere([
+                'customer_id' => Yii::$app->user->identity->getId(),
+            ]);
+        }else if($this->customer_id){
+            $query->andFilterWhere([
+                'customer_id' => $this->customer_id,
+            ]);
+        }
 
 
         if($this->created_at){
